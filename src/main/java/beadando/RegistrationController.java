@@ -27,7 +27,7 @@ public class RegistrationController {
         UserModel user = new UserModel();
 
         user.setName(unamebox.getText());
-        user.setPassword("#TODO");
+        user.setPassword(pwbox1.getText());
         user.setEmail(emailbox.getText());
         user.setAddress(city.getText() + street.getText() + hnumber.getText());
         user.setPhonenumber(phonenumber.getText());

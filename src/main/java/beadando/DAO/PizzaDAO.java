@@ -39,7 +39,7 @@ public class PizzaDAO {
     private boolean Initialize() {
         try {
             logger.trace("UserDAO initialization");
-            entityManagerFactory = Persistence.createEntityManagerFactory("AppPU");
+            entityManagerFactory = Persistence.createEntityManagerFactory("MyApp");
             entityManager = entityManagerFactory.createEntityManager();
             initialized = true;
 
