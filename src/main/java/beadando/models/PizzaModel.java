@@ -12,9 +12,9 @@ public class PizzaModel {
     @Id
     private int id;
     @Column
-    private String pName;
+    private String pizza;
     @Column
-    private String pDescription;
+    private String desc;
     @Column
     private int price;
 
@@ -26,20 +26,20 @@ public class PizzaModel {
         this.id = id;
     }
 
-    public String getpName() {
-        return pName;
+    public String getPizza() {
+        return pizza;
     }
 
-    public void setpName(String pName) {
-        this.pName = pName;
+    public void setPizza(String pizza) {
+        this.pizza = pizza;
     }
 
-    public String getpDescription() {
-        return pDescription;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setpDescription(String pDescription) {
-        this.pDescription = pDescription;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public int getPrice() {

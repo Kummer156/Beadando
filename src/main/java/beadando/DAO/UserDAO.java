@@ -1,6 +1,8 @@
 package beadando.DAO;
 
 import beadando.models.UserModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -10,7 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Data access object class to manage Users
+ */
 public class UserDAO {
+
+    private static Logger logger = LoggerFactory.getLogger(UserDAO.class);
 
     private static boolean initialized = false;
     private static UserDAO userDAO;
@@ -31,6 +38,7 @@ public class UserDAO {
 
     private boolean Initialize() {
         try {
+            logger.trace("UserDAO initialization");
             entityManagerFactory = Persistence.createEntityManagerFactory("AppPU");
             entityManager = entityManagerFactory.createEntityManager();
             initialized = true;
@@ -52,8 +60,28 @@ public class UserDAO {
         return query.getResultList();
     }
 
+
+    /**
+     *  Returns a boolean weather there is a registered user with the given username argument
+     *
+     * @param username name of the user
+     * @return true if the username is present in the database
+     */
     public boolean IsUserRegistered(String username) {
         return GetAllRecord().stream().anyMatch(e-> e.getName().equals(username));
+    }
+
+
+    /**
+     * Returns a boolean
+     *
+     * @param username Login username
+     * @param password Password for the login
+     * @return  true if the username password pair is in the database
+     */
+    public boolean UserLoginVerification(String username, String password)
+    {
+        return GetAllRecord().stream().anyMatch(e-> e.getName().equals(username) && e.getPassword().equals(password));
     }
 
     public void RegisterUser(UserModel user)
@@ -62,6 +90,7 @@ public class UserDAO {
         entityManager.getTransaction().begin();
         entityManager.persist(user);
         entityManager.getTransaction().commit();
+        logger.trace(String.format("User registered with id:%d",user.getId()));
     }
 
     private int getNextId() {
@@ -70,9 +99,6 @@ public class UserDAO {
         return nextRecordId;
     }
 
-    public void Save(UserModel record) {
-
-    }
 }
 
 

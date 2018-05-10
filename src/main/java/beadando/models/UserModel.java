@@ -69,4 +69,16 @@ public class UserModel {
     public void setPhonenumber(String phonenumber) {
         this.phonenumber = phonenumber;
     }
+
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", phonenumber='" + phonenumber + '\'' +
+                '}';
+    }
 }

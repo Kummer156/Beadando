@@ -17,6 +17,12 @@ public class Main extends Application {
         launch(args);
     }
 
+    /**
+     * Starts the application
+     *
+     * @param primaryStage basic javafx param
+     * @throws IOException something
+     */
     @Override
     public void start(Stage primaryStage) throws IOException {
 
