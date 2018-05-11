@@ -27,6 +27,7 @@
                                 <TableView fx:id="table2">
                                 </TableView>
                         <Button fx:id="orderbtn" layoutX="381.0" layoutY="376.0" mnemonicParsing="false" onAction="#PlaceOrder" text="Place Order" />
+                        <Button fx:id="logoutbtn" layoutX="405.0" layoutY="14.0" mnemonicParsing="false" onAction="#Logout" text="Logout" />
                             </children>
                         </AnchorPane>
                     </content>

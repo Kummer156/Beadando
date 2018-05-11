@@ -1,17 +1,27 @@
 package beadando;
 
+import beadando.DAO.OrderDAO;
 import beadando.DAO.PizzaDAO;
+import beadando.DAO.UserDAO;
+import beadando.models.OrderModel;
 import beadando.models.PizzaModel;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.List;
@@ -20,7 +30,9 @@ import java.util.ResourceBundle;
 
 public class WindowController implements Initializable {
 
+    private UserDAO userDAO = UserDAO.getInstance();
     private PizzaDAO pizzaDAO = PizzaDAO.getInstance();
+    private OrderDAO orderDAO = OrderDAO.getInstance();
     @FXML
     public TableView table1;
     public TableView table2;
@@ -31,6 +43,7 @@ public class WindowController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         BuildMenuTable();
         BuildCartTable();
+        System.out.println(userDAO.GetLoggedInUser());
     }
 
     private void BuildMenuTable() {
@@ -134,7 +147,26 @@ public class WindowController implements Initializable {
         table2.refresh();
     }
 
+    private void CreateOrder()
+    {
+        String items = "";
+        for (PizzaModel pz:cart)
+        {
+            if (items.isEmpty())
+                items = items + pz.getId();
+            else
+                items = items + ", " +pz.getId();
+        }
+
+        OrderModel order = new OrderModel();
+        order.setUser(userDAO.GetLoggedInUser());
+        order.setItemIds(items);
+        orderDAO.NewOrder(order);
+    }
+
     public void PlaceOrder(ActionEvent actionEvent) {
+
+        CreateOrder();
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Order");
@@ -147,5 +179,13 @@ public class WindowController implements Initializable {
         table2.refresh();
 
 
+    }
+
+    public void Logout(ActionEvent actionEvent) throws IOException {
+        Parent parent = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
+        Scene scene = new Scene(parent);
+        Stage appStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        appStage.setTitle("Login");
+        appStage.setScene(scene);
     }
 }

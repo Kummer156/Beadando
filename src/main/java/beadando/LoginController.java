@@ -24,6 +24,7 @@ public class LoginController {
     public void login(ActionEvent actionEvent) throws IOException {
 
         UserDAO user = UserDAO.getInstance();
+        user = UserDAO.getInstance();
 
         if(user.UserLoginVerification(txt1.getText(), txt2.getText())) {
             logger.trace(String.format("Login attempt with %s %s",txt1.getText(), txt2.getText()));

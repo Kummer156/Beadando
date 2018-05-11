@@ -22,6 +22,8 @@ public class UserDAO {
     private static boolean initialized = false;
     private static UserDAO userDAO;
 
+    private static UserModel loggedInUser;
+
     private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
     private int nextRecordId = 0;
@@ -81,6 +83,7 @@ public class UserDAO {
      */
     public boolean UserLoginVerification(String username, String password)
     {
+        GetAllRecord().stream().filter(e -> e.getName().equals(username)).findFirst().ifPresent(e-> loggedInUser = e);
         return GetAllRecord().stream().anyMatch(e-> e.getName().equals(username) && e.getPassword().equals(password));
     }
 
@@ -91,6 +94,11 @@ public class UserDAO {
         entityManager.persist(user);
         entityManager.getTransaction().commit();
         logger.trace(String.format("User registered with id:%d",user.getId()));
+    }
+
+    public UserModel GetLoggedInUser()
+    {
+        return loggedInUser;
     }
 
     private int getNextId() {
