@@ -56,6 +56,26 @@ public class OrderModel {
     private String itemIds;
 
     /**
+     * The price of the order.
+     */
+    @Column
+    private int price;
+
+    /**
+     * @return The price of the order
+     */
+    public int getPrice() {
+        return price;
+    }
+
+    /**
+     * @param price Price
+     */
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    /**
      * @return The orderID
      */
     public int getOrderId() {

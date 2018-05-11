@@ -31,6 +31,7 @@ import beadando.DAO.PizzaDAO;
 import beadando.DAO.UserDAO;
 import beadando.models.OrderModel;
 import beadando.models.PizzaModel;
+import beadando.models.UserModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -44,11 +45,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.apache.tools.ant.taskdefs.condition.Or;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -64,6 +67,10 @@ public class WindowController implements Initializable {
      * Label for total price.
      */
     public Label total;
+    /**
+     * TextArea to display user information.
+     */
+    public TextArea userInformation;
     /**
      * Data access object for the UserModel.
      */
@@ -94,6 +101,11 @@ public class WindowController implements Initializable {
     private ObservableList<PizzaModel> cart = FXCollections.observableArrayList();
 
     /**
+     * String for user info.
+     */
+    private StringBuilder info = new StringBuilder();
+
+    /**
      * @param location  URL
      * @param resources ResourceBundle
      */
@@ -101,6 +113,42 @@ public class WindowController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         BuildMenuTable();
         BuildCartTable();
+        BuildUserInfo();
+    }
+
+    public void BuildUserInfo()
+    {
+        info.append("User ID: ").append(userDAO.GetLoggedInUser().getId());
+        info.append("\nUsername: ").append(userDAO.GetLoggedInUser().getName());
+        info.append("\nEmail address: ").append(userDAO.GetLoggedInUser().getEmail());
+        info.append("\nPhone number: ").append(userDAO.GetLoggedInUser().getPhonenumber());
+        info.append("\nAddress: ").append(userDAO.GetLoggedInUser().getAddress());
+        info.append("\nTotal number of orders: ").append(CalculateTotalNumberOfOrders(orderDAO.GetAllRecord(),userDAO.GetLoggedInUser()));
+        info.append("\nTotal money spent: ").append(CalculateTotalMoneySpent(orderDAO.GetAllRecord(),userDAO.GetLoggedInUser()));
+        info.append("\nAverage money spent on order").append(CalculateAverageMoneySpent(orderDAO.GetAllRecord(),userDAO.GetLoggedInUser()));
+
+        userInformation.setText(info.toString());
+    }
+
+    public int CalculateTotalNumberOfOrders(List<OrderModel> orders, UserModel user)
+    {
+        return ((int) orders.stream().filter(e -> e.getUser().getId() == user.getId()).count());
+    }
+
+    public int CalculateTotalMoneySpent(List<OrderModel> orders,UserModel user)
+    {
+        int sum = 0;
+        for(OrderModel o:orders)
+        {
+            if (o.getUser().getId() == user.getId())
+                sum += o.getPrice();
+        }
+        return sum;
+    }
+
+    public double CalculateAverageMoneySpent(List<OrderModel> orders, UserModel user)
+    {
+        return CalculateTotalMoneySpent(orders, user)/CalculateTotalNumberOfOrders(orders, user);
     }
 
     /**
@@ -249,6 +297,7 @@ public class WindowController implements Initializable {
         OrderModel order = new OrderModel();
         order.setUser(userDAO.GetLoggedInUser());
         order.setItemIds(items.toString());
+        order.setPrice(CalculateCartPrice(cart));
         orderDAO.NewOrder(order);
     }
 
@@ -266,8 +315,9 @@ public class WindowController implements Initializable {
             alert.setContentText("There is nothing to order");
             alert.showAndWait();
         } else {
-            CreateOrder();
 
+            CreateOrder();
+            BuildUserInfo();
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Order");
             alert.setHeaderText(null);
