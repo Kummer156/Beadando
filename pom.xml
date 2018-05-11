@@ -8,6 +8,11 @@
     <artifactId>Beadando</artifactId>
     <version>1.0</version>
 
+    <organization>
+        <name>Faculty of Informatics, University of Debrecen</name>
+        <url>https://it.inf.unideb.hu/</url>
+    </organization>
+    <inceptionYear>2016</inceptionYear>
     <licenses>
         <license>
             <name>MIT License</name>
