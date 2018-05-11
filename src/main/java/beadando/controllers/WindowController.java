@@ -1,4 +1,4 @@
-package beadando;
+package beadando.controllers;
 
 /*-
  * #%L

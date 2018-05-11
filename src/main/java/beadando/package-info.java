@@ -1,5 +1,5 @@
 /**
- * Main package with controllers.
+ * Main package.
  */
 package beadando;
 
