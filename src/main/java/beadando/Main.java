@@ -10,15 +10,23 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Main class for the application.
+ */
 public class Main extends Application {
 
+    /**
+     * The main method.
+     *
+     * @param args input arguments
+     */
     public static void main(String[] args) {
 
         launch(args);
     }
 
     /**
-     * Starts the application
+     * Starts the application.
      *
      * @param primaryStage basic javafx param
      * @throws IOException something

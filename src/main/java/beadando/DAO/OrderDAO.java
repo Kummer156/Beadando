@@ -1,7 +1,6 @@
 package beadando.DAO;
 
 import beadando.models.OrderModel;
-import beadando.models.UserModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,45 +12,71 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Data access object class to manage the orders.
+ */
 public class OrderDAO {
 
 
+    /**
+     * Logger.
+     */
     private static Logger logger = LoggerFactory.getLogger(UserDAO.class);
 
+    /**
+     * Boolean to determine if the DAO is initialized or not.
+     */
     private static boolean initialized = false;
+    /**
+     * The instance for the OrderDAO.
+     */
     private static OrderDAO orderDAO;
 
-    private EntityManagerFactory entityManagerFactory;
+    /**
+     * EntityManager for the database.
+     */
     private EntityManager entityManager;
+    /**
+     * Next Highest id for a new record.
+     */
     private int nextRecordId = 0;
 
+    /**
+     * Constructor.
+     */
     private OrderDAO() {
         Initialize();
     }
 
+    /**
+     * @return The OrderDAO instance.
+     */
     public static OrderDAO getInstance() {
         if (!initialized)
             orderDAO = new OrderDAO();
         return orderDAO;
     }
 
-    private boolean Initialize() {
+    /**
+     * Initializes The DAO.
+     */
+    private void Initialize() {
         try {
             logger.trace("OrderDAO initialization");
-            entityManagerFactory = Persistence.createEntityManagerFactory("MyApp");
+            EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("MyApp");
             entityManager = entityManagerFactory.createEntityManager();
             initialized = true;
         } catch (Exception e) {
             System.out.println(e.toString());
             initialized = false;
         }
-        return initialized;
     }
 
-    public boolean IsInitialized() {
-        return initialized;
-    }
-
+    /**
+     * Creates a new OrderModel record in the database with the parameters.
+     *
+     * @param order Ordermodel of a new order
+     */
     public void NewOrder(OrderModel order)
     {
         order.setOrderId(getNextId());
@@ -61,6 +86,9 @@ public class OrderDAO {
 
     }
 
+    /**
+     * @return all the orders in a List of Ordermodels from the database.
+     */
     public List<OrderModel> GetAllRecord() {
         if (!initialized)
             return new ArrayList<>();
@@ -68,6 +96,9 @@ public class OrderDAO {
         return query.getResultList();
     }
 
+    /**
+     * @return The highest id +1
+     */
     private int getNextId() {
         Optional<Integer> maxId = GetAllRecord().stream().map(OrderModel::getOrderId).max(Integer::compareTo);
         maxId.ifPresent(integer -> nextRecordId = integer + 1);

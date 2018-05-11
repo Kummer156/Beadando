@@ -15,12 +15,30 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 
+/**
+ * Controller for the login window.
+ */
 public class LoginController {
+    /**
+     * TextField for the username.
+     */
     public TextField txt1;
+    /**
+     * PasswordField for the password.
+     */
     public PasswordField txt2;
 
+    /**
+     * Logger.
+     */
     private static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
+    /**
+     * Attempts to login with the given username and password.
+     *
+     * @param actionEvent javaFX event
+     * @throws IOException exception
+     */
     public void login(ActionEvent actionEvent) throws IOException {
 
         UserDAO user = UserDAO.getInstance();
@@ -37,6 +55,12 @@ public class LoginController {
 
     }
 
+    /**
+     * Changes scene to the registration window.
+     *
+     * @param actionEvent javaFX event
+     * @throws IOException exception
+     */
     public void register(ActionEvent actionEvent) throws IOException {
         Parent parent = FXMLLoader.load(getClass().getResource("/fxml/Registration.fxml"));
         Scene scene = new Scene(parent);

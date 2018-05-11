@@ -5,7 +5,6 @@ import beadando.DAO.PizzaDAO;
 import beadando.DAO.UserDAO;
 import beadando.models.OrderModel;
 import beadando.models.PizzaModel;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,22 +22,47 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.List;
 import java.util.ResourceBundle;
 
 
+/**
+ * Controller for the Application.
+ */
 public class WindowController implements Initializable {
 
+    /**
+     * Data access object for the UserModel.
+     */
     private UserDAO userDAO = UserDAO.getInstance();
+    /**
+     * Data access object for the PizzaModel.
+     */
     private PizzaDAO pizzaDAO = PizzaDAO.getInstance();
+    /**
+     * Data access object for the OrderModel.
+     */
     private OrderDAO orderDAO = OrderDAO.getInstance();
-    @FXML
+    /**
+     * TableView for the Window.fxml.
+     */
     public TableView table1;
+    /**
+     * TableView for the Window.fxml.
+     */
     public TableView table2;
+    /**
+     * An ObservableList<PizzaModel> for storing the items on the menu.
+     */
     private ObservableList<PizzaModel> data = FXCollections.observableArrayList(pizzaDAO.GetAllRecord());
+    /**
+     * An ObservableList<PizzaModel> for storing the items currently in the cart.
+     */
     private ObservableList<PizzaModel> cart = FXCollections.observableArrayList();
 
+    /**
+     * @param location URL
+     * @param resources ResourceBundle
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         BuildMenuTable();
@@ -46,6 +70,9 @@ public class WindowController implements Initializable {
         System.out.println(userDAO.GetLoggedInUser());
     }
 
+    /**
+     * Creates the table for the menu.
+     */
     private void BuildMenuTable() {
 
         table1.setItems(data);
@@ -95,6 +122,9 @@ public class WindowController implements Initializable {
         table1.getColumns().addAll(name, description, price, button);
     }
 
+    /**
+     * Creates the cart table.
+     */
     public void BuildCartTable()
     {
         TableColumn name = new TableColumn("Pizza");
@@ -142,11 +172,19 @@ public class WindowController implements Initializable {
     }
 
 
+    /**
+     * Refreshes the table on switching tabs.
+     *
+     * @param event javaFX event
+     */
     public void refresh(Event event) {
         table2.setItems(cart);
         table2.refresh();
     }
 
+    /**
+     * Creates the OrderModel for the order.
+     */
     private void CreateOrder()
     {
         String items = "";
@@ -164,6 +202,11 @@ public class WindowController implements Initializable {
         orderDAO.NewOrder(order);
     }
 
+    /**
+     * Places the order for the currently logged in user then clears the items from the cart.
+     *
+     * @param actionEvent javaFX event
+     */
     public void PlaceOrder(ActionEvent actionEvent) {
 
         CreateOrder();
@@ -181,6 +224,12 @@ public class WindowController implements Initializable {
 
     }
 
+    /**
+     * Method for users to log out and get to the login screen.
+     *
+     * @param actionEvent javaFX event
+     * @throws IOException a
+     */
     public void Logout(ActionEvent actionEvent) throws IOException {
         Parent parent = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
         Scene scene = new Scene(parent);

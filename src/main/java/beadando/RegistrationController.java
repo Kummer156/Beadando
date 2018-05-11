@@ -12,16 +12,48 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.io.IOException;
 
+/**
+ * Controller for the registration window.
+ */
 public class RegistrationController {
+    /**
+     * Username for the registration.
+     */
     public TextField unamebox;
+    /**
+     * Password for the registration.
+     */
     public TextField pwbox1;
+    /**
+     * Password for confirmation.
+     */
     public TextField pwbox2;
+    /**
+     * Email for the registration.
+     */
     public TextField emailbox;
+    /**
+     * City name for the registration.
+     */
     public TextField city;
+    /**
+     * House number for the registration.
+     */
     public TextField hnumber;
+    /**
+     * Phone number for the registration.
+     */
     public TextField phonenumber;
+    /**
+     * Street name for the registration.
+     */
     public TextField street;
 
+    /**
+     * Creates a new UserModel for the registration.
+     *
+     * @return UserModel
+     */
     private UserModel CreateUser()
     {
         UserModel user = new UserModel();
@@ -36,6 +68,12 @@ public class RegistrationController {
     }
 
 
+    /**
+     * Opens the login view.
+     *
+     * @param actionEvent java
+     * @throws IOException exception
+     */
     public void back(ActionEvent actionEvent) throws IOException {
         Parent parent = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
         Scene scene = new Scene(parent);
@@ -44,6 +82,12 @@ public class RegistrationController {
         appStage.setScene(scene);
     }
 
+    /**
+     * Checks whether the user can register or not.
+     *
+     * @param actionEvent javaFX event
+     * @throws IOException exception
+     */
     public void register(ActionEvent actionEvent) throws IOException {
         String alerts = "";
 

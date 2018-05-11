@@ -3,7 +3,7 @@ package beadando.models;
 import javax.persistence.*;
 
 /**
- * Model for storing information of the pizzas
+ * Model for storing information of the pizzas.
  */
 @Entity
 @Table(name = "Pizza")

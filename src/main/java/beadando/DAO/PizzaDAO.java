@@ -1,9 +1,6 @@
 package beadando.DAO;
 
 import beadando.models.PizzaModel;
-import beadando.models.UserModel;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,33 +10,54 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * Data access object class to manage the menu.
+ */
 public class PizzaDAO {
 
+    /**
+     * Logger.
+     */
     private static Logger logger = LoggerFactory.getLogger(PizzaDAO.class);
 
+    /**
+     * Boolean to determine if the DAO is initialized or not.
+     */
     private static boolean initialized = false;
+    /**
+     * The instance for the PizzaDAO.
+     */
     private static PizzaDAO pizzaDAO;
 
-    private EntityManagerFactory entityManagerFactory;
+    /**
+     * EntityManager for the database.
+     */
     private EntityManager entityManager;
-    private int nextRecordId = 0;
 
+    /**
+     * Constructor.
+     */
     private PizzaDAO() {
         Initialize();
     }
 
+    /**
+     * @return The PizzaDAO instance.
+     */
     public static PizzaDAO getInstance() {
         if (!initialized)
             pizzaDAO = new PizzaDAO();
         return pizzaDAO;
     }
 
-    private boolean Initialize() {
+    /**
+     * Initializes the DAO.
+     */
+    private void Initialize() {
         try {
             logger.trace("UserDAO initialization");
-            entityManagerFactory = Persistence.createEntityManagerFactory("MyApp");
+            EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("MyApp");
             entityManager = entityManagerFactory.createEntityManager();
             initialized = true;
 
@@ -47,24 +65,16 @@ public class PizzaDAO {
             System.out.println(e.toString());
             initialized = false;
         }
-        return initialized;
     }
 
-    public boolean IsInitialized() {
-        return initialized;
-    }
-
+    /**
+     * @return A list of PizzaModels that are in the database.
+     */
     public List<PizzaModel> GetAllRecord() {
         if (!initialized)
             return new ArrayList<>();
         TypedQuery<PizzaModel> query = entityManager.createQuery("SELECT e FROM PizzaModel e", PizzaModel.class);
         return query.getResultList();
-    }
-
-    private int getNextId() {
-        Optional<Integer> maxId = GetAllRecord().stream().map(PizzaModel::getId).max(Integer::compareTo);
-        maxId.ifPresent(integer -> nextRecordId = integer + 1);
-        return nextRecordId;
     }
 
 }
