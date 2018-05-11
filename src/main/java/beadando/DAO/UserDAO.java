@@ -159,7 +159,7 @@ public class UserDAO {
     }
 
     /**
-     * Deletes the user from the database
+     * Deletes the user from the database.
      *
      * @param user Usermodel
      */

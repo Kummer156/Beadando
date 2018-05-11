@@ -29,6 +29,7 @@ package beadando.controllers;
 import beadando.DAO.OrderDAO;
 import beadando.DAO.PizzaDAO;
 import beadando.DAO.UserDAO;
+import beadando.Services.UserStatistics;
 import beadando.models.OrderModel;
 import beadando.models.PizzaModel;
 import beadando.models.UserModel;
@@ -101,11 +102,6 @@ public class WindowController implements Initializable {
     private ObservableList<PizzaModel> cart = FXCollections.observableArrayList();
 
     /**
-     * String for user info.
-     */
-    private StringBuilder info = new StringBuilder();
-
-    /**
      * @param location  URL
      * @param resources ResourceBundle
      */
@@ -116,40 +112,25 @@ public class WindowController implements Initializable {
         BuildUserInfo();
     }
 
+    /**
+     * Creates the user info string.
+     */
     public void BuildUserInfo()
     {
-        info.append("User ID: ").append(userDAO.GetLoggedInUser().getId());
-        info.append("\nUsername: ").append(userDAO.GetLoggedInUser().getName());
-        info.append("\nEmail address: ").append(userDAO.GetLoggedInUser().getEmail());
-        info.append("\nPhone number: ").append(userDAO.GetLoggedInUser().getPhonenumber());
-        info.append("\nAddress: ").append(userDAO.GetLoggedInUser().getAddress());
-        info.append("\nTotal number of orders: ").append(CalculateTotalNumberOfOrders(orderDAO.GetAllRecord(),userDAO.GetLoggedInUser()));
-        info.append("\nTotal money spent: ").append(CalculateTotalMoneySpent(orderDAO.GetAllRecord(),userDAO.GetLoggedInUser()));
-        info.append("\nAverage money spent on order").append(CalculateAverageMoneySpent(orderDAO.GetAllRecord(),userDAO.GetLoggedInUser()));
 
-        userInformation.setText(info.toString());
+        String info =
+                "User ID: " + userDAO.GetLoggedInUser().getId() +
+                "\nUsername: " + userDAO.GetLoggedInUser().getName() +
+                "\nEmail address: " + userDAO.GetLoggedInUser().getEmail() +
+                "\nPhone number: " + userDAO.GetLoggedInUser().getPhonenumber() +
+                "\nAddress: " + userDAO.GetLoggedInUser().getAddress() +
+                "\nTotal number of orders: " + UserStatistics.CalculateTotalNumberOfOrders(orderDAO.GetAllRecord(), userDAO.GetLoggedInUser()) +
+                "\nTotal money spent: " + UserStatistics.CalculateTotalMoneySpent(orderDAO.GetAllRecord(), userDAO.GetLoggedInUser()) +
+                "\nAverage money spent on order: " + UserStatistics.CalculateAverageMoneySpent(orderDAO.GetAllRecord(), userDAO.GetLoggedInUser());
+        userInformation.setText(info);
     }
 
-    public int CalculateTotalNumberOfOrders(List<OrderModel> orders, UserModel user)
-    {
-        return ((int) orders.stream().filter(e -> e.getUser().getId() == user.getId()).count());
-    }
 
-    public int CalculateTotalMoneySpent(List<OrderModel> orders,UserModel user)
-    {
-        int sum = 0;
-        for(OrderModel o:orders)
-        {
-            if (o.getUser().getId() == user.getId())
-                sum += o.getPrice();
-        }
-        return sum;
-    }
-
-    public double CalculateAverageMoneySpent(List<OrderModel> orders, UserModel user)
-    {
-        return CalculateTotalMoneySpent(orders, user)/CalculateTotalNumberOfOrders(orders, user);
-    }
 
     /**
      * Creates the table for the menu.
@@ -270,7 +251,7 @@ public class WindowController implements Initializable {
     /**
      * Calculates the total price.
      *
-     * @param cart ObservableList<PizzaModel>
+     * @param cart {@code ObservableList<PizzaModel>}
      * @return The total price of items in the cart
      */
     public int CalculateCartPrice(ObservableList<PizzaModel> cart)

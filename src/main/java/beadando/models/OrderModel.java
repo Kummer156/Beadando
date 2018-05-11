@@ -34,7 +34,28 @@ import javax.persistence.*;
 @Entity
 @Table(name = "Orders")
 public class OrderModel {
+    /**
+     * Basic constructor.
+     *
+     * @param orderId orderID
+     * @param user user
+     * @param itemIds itemIds
+     * @param price price
+     */
+    public OrderModel(int orderId, UserModel user, String itemIds, int price) {
+        this.orderId = orderId;
+        this.user = user;
+        this.itemIds = itemIds;
+        this.price = price;
+    }
 
+    /**
+     * Empty constructor.
+     */
+    public OrderModel()
+    {
+
+    }
 
     /**
      * Orders ID.
@@ -122,7 +143,7 @@ public class OrderModel {
      */
     @Override
     public String toString() {
-        return "OrderModel{" + "id=" + orderId + user.toString() + "}";
+        return "OrderModel{" + "id=" + orderId + user.toString() + " itemids:" + itemIds + " price" + price + "}";
 
     }
 
