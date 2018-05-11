@@ -42,6 +42,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.InputMethodEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.slf4j.Logger;
@@ -60,6 +61,10 @@ public class WindowController implements Initializable {
      * Logger.
      */
     private static Logger logger = LoggerFactory.getLogger(WindowController.class);
+    /**
+     * Label for total price.
+     */
+    public Label total;
     /**
      * Data access object for the UserModel.
      */
@@ -138,6 +143,7 @@ public class WindowController implements Initializable {
                                     btn.setOnAction(event -> {
                                         PizzaModel pz = getTableView().getItems().get(getIndex());
                                         cart.add(pz);
+                                        total.setText("Total price:" + CalculateCartPrice(cart));
                                     });
                                     setGraphic(btn);
                                     setText(null);
@@ -187,6 +193,7 @@ public class WindowController implements Initializable {
                                 } else {
                                     btn.setOnAction(event -> {
                                         cart.remove(getIndex());
+                                        total.setText("Total price:" + CalculateCartPrice(cart));
                                     });
                                     setGraphic(btn);
                                     setText(null);
@@ -211,6 +218,21 @@ public class WindowController implements Initializable {
     public void refresh(Event event) {
         table2.setItems(cart);
         table2.refresh();
+    }
+
+    /**
+     * Calculates the total price.
+     *
+     * @param cart ObservableList<PizzaModel>
+     * @return The total price of items in the cart
+     */
+    private int CalculateCartPrice(ObservableList<PizzaModel> cart)
+    {
+        int price = 0;
+        for(PizzaModel pz:cart)
+            price += pz.getPrice();
+
+        return price;
     }
 
     /**
@@ -270,7 +292,7 @@ public class WindowController implements Initializable {
         try {
             parent = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.toString());
         }
         Scene scene = new Scene(parent);
         Stage appStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
