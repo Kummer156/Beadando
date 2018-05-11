@@ -42,7 +42,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.InputMethodEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.slf4j.Logger;
@@ -162,7 +161,7 @@ public class WindowController implements Initializable {
     /**
      * Creates the cart table.
      */
-    public void BuildCartTable() {
+    private void BuildCartTable() {
         logger.trace("Building cart table");
         TableColumn name = new TableColumn("Pizza");
         name.setCellValueFactory(new PropertyValueFactory<PizzaModel, String>("pizza"));
@@ -226,7 +225,7 @@ public class WindowController implements Initializable {
      * @param cart ObservableList<PizzaModel>
      * @return The total price of items in the cart
      */
-    private int CalculateCartPrice(ObservableList<PizzaModel> cart)
+    public int CalculateCartPrice(ObservableList<PizzaModel> cart)
     {
         int price = 0;
         for(PizzaModel pz:cart)
@@ -277,6 +276,7 @@ public class WindowController implements Initializable {
 
             cart.removeAll(cart);
             table2.setItems(cart);
+            total.setText("Total price:" + CalculateCartPrice(cart));
             table2.refresh();
 
         }

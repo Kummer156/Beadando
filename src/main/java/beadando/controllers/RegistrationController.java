@@ -105,7 +105,7 @@ public class RegistrationController {
     /**
      * Opens the login view.
      *
-     * @param actionEvent java
+     * @param actionEvent javaFX event
      */
     public void back(ActionEvent actionEvent){
         Parent parent = null;
@@ -121,7 +121,7 @@ public class RegistrationController {
     }
 
     /**
-     * Checks whether the user can register or not.
+     * Checks whether the user can register or not with the given parameters.
      *
      * @param actionEvent javaFX event
      */

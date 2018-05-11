@@ -1,41 +1,51 @@
 package beadando.models;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class UserModelTest {
+public class UserModelTest {
 
-    UserModel user = new UserModel();
+    private UserModel user = new UserModel();
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() throws Exception {
         user.setId(0);
+        user.setName("User");
+        user.setPassword("Pw");
+        user.setEmail("TestEmail");
+        user.setAddress("TestAddress");
+        user.setPhonenumber("phone");
     }
 
     @Test
-    void getId() {
+    public void getId() {
         assertEquals(0,user.getId());
     }
 
     @Test
-    void getName() {
+    public void getName() {
+        assertEquals("User",user.getName());
     }
 
     @Test
-    void getPassword() {
+    public void getPassword() {
+        assertEquals("Pw",user.getPassword());
     }
 
     @Test
-    void getEmail() {
+    public void getEmail() {
+        assertEquals("TestEmail",user.getEmail());
     }
 
     @Test
-    void getAddress() {
+    public void getAddress() {
+        assertEquals("TestAddress",user.getAddress());
     }
 
     @Test
-    void getPhonenumber() {
+    public void getPhonenumber() {
+        assertEquals("phone",user.getPhonenumber());
     }
 }

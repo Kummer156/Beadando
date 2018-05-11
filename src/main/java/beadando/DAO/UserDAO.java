@@ -159,6 +159,20 @@ public class UserDAO {
     }
 
     /**
+     * Deletes the user from the database
+     *
+     * @param user Usermodel
+     */
+    public void DeleteUser(UserModel user)
+    {
+        entityManager.getTransaction().begin();
+        entityManager.remove(user);
+        entityManager.getTransaction().commit();
+        logger.info(String.format("User deleted with id:%d",user.getId()));
+    }
+
+
+    /**
      * @return The currently logged in user
      */
     public UserModel GetLoggedInUser()
