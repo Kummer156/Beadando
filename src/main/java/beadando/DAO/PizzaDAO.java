@@ -27,6 +27,7 @@ package beadando.DAO;
  */
 
 import beadando.models.PizzaModel;
+import javafx.application.Platform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,8 +73,21 @@ public class PizzaDAO {
      * @return The PizzaDAO instance.
      */
     public static PizzaDAO getInstance() {
+
         if (!initialized)
             pizzaDAO = new PizzaDAO();
+
+
+        try{
+            EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("MyApp");
+        }
+        catch (Exception e)
+        {
+            logger.error("No database");
+            initialized = false;
+
+        }
+
         return pizzaDAO;
     }
 

@@ -27,6 +27,8 @@ package beadando.DAO;
  */
 
 import beadando.models.UserModel;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,8 +84,27 @@ public class UserDAO {
      * @return The UserDAO instance.
      */
     public static UserDAO getInstance() {
+
+
         if (!initialized)
             userDAO = new UserDAO();
+
+        try{
+            EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("MyApp");
+        }
+        catch (Exception e)
+        {
+            logger.error("No database connection");
+            initialized = false;
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Database error");
+            alert.setHeaderText(null);
+            alert.setContentText("No database connection, closing application");
+            alert.showAndWait();
+            Platform.exit();
+            System.exit(0);
+        }
+
         return userDAO;
     }
 

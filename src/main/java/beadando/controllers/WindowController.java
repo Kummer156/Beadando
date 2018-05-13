@@ -126,7 +126,9 @@ public class WindowController implements Initializable {
                 "\nAddress: " + userDAO.GetLoggedInUser().getAddress() +
                 "\nTotal number of orders: " + UserStatistics.CalculateTotalNumberOfOrders(orderDAO.GetAllRecord(), userDAO.GetLoggedInUser()) +
                 "\nTotal money spent: " + UserStatistics.CalculateTotalMoneySpent(orderDAO.GetAllRecord(), userDAO.GetLoggedInUser()) +
-                "\nAverage money spent on order: " + UserStatistics.CalculateAverageMoneySpent(orderDAO.GetAllRecord(), userDAO.GetLoggedInUser());
+                "\nAverage money spent on order: " + UserStatistics.CalculateAverageMoneySpent(orderDAO.GetAllRecord(), userDAO.GetLoggedInUser()) +
+                "\nMost expensive order: "+ UserStatistics.MostExpensiveOrder(orderDAO.GetAllRecord(),userDAO.GetLoggedInUser()) +
+                "\nFavourite item: "+ UserStatistics.FavouriteItem(orderDAO.GetAllRecord(),userDAO.GetLoggedInUser(),pizzaDAO.GetAllRecord());
         userInformation.setText(info);
     }
 

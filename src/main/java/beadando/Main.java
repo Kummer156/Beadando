@@ -60,10 +60,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
 
-        UserDAO userDAO = UserDAO.getInstance();
-
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
-        primaryStage.setTitle("login" +(userDAO.IsInitialized() ? "" : " [Database Error]"));
+        primaryStage.setTitle("login");
         primaryStage.setOnCloseRequest(e ->
         {
             Platform.exit();

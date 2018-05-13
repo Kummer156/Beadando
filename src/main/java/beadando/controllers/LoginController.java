@@ -12,10 +12,10 @@ package beadando.controllers;
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,6 +26,8 @@ package beadando.controllers;
  * #L%
  */
 
+import beadando.DAO.OrderDAO;
+import beadando.DAO.PizzaDAO;
 import beadando.DAO.UserDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -65,33 +67,33 @@ public class LoginController {
      *
      * @param actionEvent javaFX event
      */
-    public void login(ActionEvent actionEvent){
+    public void login(ActionEvent actionEvent) {
 
         UserDAO user = UserDAO.getInstance();
 
-        if(user.UserLoginVerification(txt1.getText(), txt2.getText())) {
-            logger.info(String.format("User: %s successfully logged in",txt1.getText()));
-            Parent parent = null;
-            try {
-                parent = FXMLLoader.load(getClass().getResource("/fxml/Window.fxml"));
-            } catch (IOException e) {
-                logger.error(e.toString());
+            if (user.UserLoginVerification(txt1.getText(), txt2.getText())) {
+                logger.info(String.format("User: %s successfully logged in", txt1.getText()));
+                Parent parent = null;
+                try {
+                    parent = FXMLLoader.load(getClass().getResource("/fxml/Window.fxml"));
+                } catch (IOException e) {
+                    logger.error(e.toString());
+                    return;
+                }
+                Scene scene = new Scene(parent);
+                Stage appStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                appStage.setTitle("Window");
+                appStage.setScene(scene);
+            } else {
+                logger.trace(String.format("invalid login attempt with %s %s", txt1.getText(), txt2.getText()));
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Login error");
+                alert.setHeaderText(null);
+                alert.setContentText("Invalid Username or Password");
+                alert.showAndWait();
+
             }
-            Scene scene = new Scene(parent);
-            Stage appStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            appStage.setTitle("Window");
-            appStage.setScene(scene);
-        }
-        else {
-            logger.trace(String.format("invalid login attempt with %s %s",txt1.getText(), txt2.getText()));
-
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Registration");
-            alert.setHeaderText(null);
-            alert.setContentText("Invalid Username or Password");
-            alert.showAndWait();
-
-        }
 
     }
 
@@ -100,7 +102,7 @@ public class LoginController {
      *
      * @param actionEvent javaFX event
      */
-    public void register(ActionEvent actionEvent){
+    public void register(ActionEvent actionEvent) {
         Parent parent = null;
         try {
             parent = FXMLLoader.load(getClass().getResource("/fxml/Registration.fxml"));

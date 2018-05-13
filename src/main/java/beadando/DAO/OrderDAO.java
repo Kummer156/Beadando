@@ -78,8 +78,20 @@ public class OrderDAO {
      * @return The OrderDAO instance.
      */
     public static OrderDAO getInstance() {
+
+
         if (!initialized)
             orderDAO = new OrderDAO();
+
+        try{
+            EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("MyApp");
+        }
+        catch (Exception e)
+        {
+            logger.error("No database");
+            initialized = false;
+        }
+
         return orderDAO;
     }
 
