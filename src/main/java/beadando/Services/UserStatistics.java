@@ -80,6 +80,8 @@ public class UserStatistics {
     public static int MostExpensiveOrder(List<OrderModel> orders, UserModel user) {
         final OrderModel[] result = {null};
         orders.stream().filter(e -> e.getUser().getId() == user.getId()).max(Comparator.comparingInt(OrderModel::getPrice)).ifPresent(e -> result[0] = e);
+        if (result[0] == null)
+            return 0;
         return result[0].getPrice();
     }
 

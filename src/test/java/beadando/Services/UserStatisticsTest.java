@@ -27,6 +27,7 @@ package beadando.Services;
  */
 
 import beadando.models.OrderModel;
+import beadando.models.PizzaModel;
 import beadando.models.UserModel;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,12 +40,20 @@ import static org.junit.Assert.*;
 public class UserStatisticsTest {
 
     private List<OrderModel> orders = new ArrayList<>();
+    private List<PizzaModel> menu = new ArrayList<>();
     private UserModel testUser = new UserModel();
     private UserModel testUser2 = new UserModel();
 
 
     @Before
     public void setUp() throws Exception {
+
+        PizzaModel testPizza = new PizzaModel();
+
+        testPizza.setPrice(300);
+        testPizza.setPizza("Pizza1");
+        testPizza.setId(0);
+        testPizza.setDesc("desc");
 
         testUser.setId(0);
         testUser.setName("User");
@@ -65,6 +74,21 @@ public class UserStatisticsTest {
         orders.add(new OrderModel(2,testUser2,"1, 5, 2, 4",500));
         orders.add(new OrderModel(3,testUser,"1, 2, 3, 4",2000));
 
+        menu.add(testPizza);
+        testPizza.setPizza("Pizza1");
+        testPizza.setId(1);
+        menu.add(testPizza);
+        testPizza.setPizza("Pizza2");
+        testPizza.setId(2);
+        menu.add(testPizza);
+        testPizza.setPizza("Pizza3");
+        testPizza.setId(3);
+        menu.add(testPizza);
+        testPizza.setPizza("Pizza4");
+        testPizza.setId(4);
+        menu.add(testPizza);
+        testPizza.setPizza("Pizza5");
+        testPizza.setId(5);
     }
 
     @Test
@@ -86,5 +110,12 @@ public class UserStatisticsTest {
         assertEquals(4400.0/3.0,UserStatistics.CalculateAverageMoneySpent(orders,testUser),0.1);
         assertEquals(500.0/1.0,UserStatistics.CalculateAverageMoneySpent(orders,testUser2),0.1);
         assertEquals(0,UserStatistics.CalculateTotalNumberOfOrders(new ArrayList<>(),testUser));
+    }
+
+    @Test
+    public void mostExpensiveOrder() {
+        assertEquals(2000,UserStatistics.MostExpensiveOrder(orders,testUser));
+        assertEquals(500,UserStatistics.MostExpensiveOrder(orders,testUser2));
+        assertEquals(0,UserStatistics.MostExpensiveOrder(new ArrayList<>(),testUser));
     }
 }
