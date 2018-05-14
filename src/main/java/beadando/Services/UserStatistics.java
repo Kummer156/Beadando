@@ -77,6 +77,11 @@ public class UserStatistics {
             return (double) CalculateTotalMoneySpent(orders, user) / (double) CalculateTotalNumberOfOrders(orders, user);
     }
 
+    /**
+     * @param orders All the orders from the databese
+     * @param user Usermodel for the current user
+     * @return The price of the most expensive order by the user
+     */
     public static int MostExpensiveOrder(List<OrderModel> orders, UserModel user) {
         final OrderModel[] result = {null};
         orders.stream().filter(e -> e.getUser().getId() == user.getId()).max(Comparator.comparingInt(OrderModel::getPrice)).ifPresent(e -> result[0] = e);
@@ -85,6 +90,12 @@ public class UserStatistics {
         return result[0].getPrice();
     }
 
+    /**
+     * @param orders All the orders from the databese
+     * @param user Usermodel for the current user
+     * @param menu List of all available pizza
+     * @return The name of the pizza that was ordered the most by the user
+     */
     public static String FavouriteItem(List<OrderModel> orders, UserModel user, List<PizzaModel> menu) {
         final String[] allItemsOrdered = {""};
         int id = 0;
