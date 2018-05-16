@@ -35,7 +35,7 @@
         <properties>
             <!-- Remote DB-->
             <property name="hibernate.connection.url"
-                                  value="jdbc:firebirdsql:94.21.173.23/3050:DB?charSet=utf-8"/>
+                                  value="jdbc:firebirdsql:92.249.140.32/3050:DB?charSet=utf-8"/>
             <!-- Local DB
             <property name="hibernate.connection.url"
                       value="jdbc:firebirdsql:localhost/3050:DB?charSet=utf-8"/>-->
